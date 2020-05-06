@@ -62,6 +62,16 @@ app.post('/scream', (req, res) => {
     })
 })
 
+// validation method
+const isEmpty = str => {
+  return str.trim() === ''
+}
+
+const isEmail = email => {
+  const regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return email.match(regEx)
+}
+
 // Signup
 let userId, userToken;
 app.post('/signup', (req, res) => {
@@ -71,6 +81,21 @@ app.post('/signup', (req, res) => {
     confirmPassword: req.body.confirmPassword,
     handle: req.body.handle
   }
+
+  let errors = {}
+  // validation email
+  if (isEmpty(newUser.email)) {
+    errors.email = 'Email must not be empty'
+  } else if (!isEmail(newUser.email)) {
+    errors.email = 'Must be a valid email address'
+  }
+  // validation password
+  if (isEmpty(newUser.password)) errors.password = "Must not be empty"
+  if (newUser.password !== newUser.confirmPassword) errors.password = "Passwords must match"
+  // validation password
+  if (isEmpty(newUser.handle)) errors.handle = "Must not be empty"
+
+  if (Object.keys(errors).length > 0) return res.status(400).json(errors)
 
   db.doc(`/users/${newUser.handle}`).get()
     .then(doc => {
