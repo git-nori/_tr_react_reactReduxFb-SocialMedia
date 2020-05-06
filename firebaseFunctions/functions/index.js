@@ -23,6 +23,39 @@ const app = express()
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 
+// token認証を行い認証したユーザーのuserHandleをリクエストに追加する
+const FBAuth = (req, res, next) => {
+  let idToken
+  // validation exist token in header
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+    idToken = req.headers.authorization.split('Bearer ')[1]
+  } else {
+    console.error('No token found')
+    return res.status(403).json({ error: 'Unauthorized' })
+  }
+
+  // verify token
+  admin.auth().verifyIdToken(idToken)
+    .then(decodedToken => {
+      req.user = decodedToken
+      console.log(decodedToken)
+      return db.collection('users')
+        .where('userId', '==', req.user.uid)
+        .limit(1)
+        .get()
+    })
+    .then(data => {
+      // set userHandle in body
+      req.user.handle = data.docs[0].data().handle
+
+      return next()
+    })
+    .catch(err => {
+      console.error(err)
+      return res.status(403).json(err)
+    })
+}
+
 // firestoreからscreamsを全件取得しレスポンスを返す
 app.get('/screams', (req, res) => {
   db.collection('screams')
@@ -45,10 +78,10 @@ app.get('/screams', (req, res) => {
 })
 
 // firestoreにscreamsを1件登録する
-app.post('/scream', (req, res) => {
+app.post('/scream', FBAuth, (req, res) => {
   const newScream = {
     body: req.body.body,
-    userHandle: req.body.userHandle,
+    userHandle: req.user.handle,
     createdAt: new Date().toISOString()
   }
 
@@ -133,6 +166,36 @@ app.post('/signup', (req, res) => {
       } else {
         return res.status(500).json({ message: err.code })
       }
+    })
+})
+
+// signin
+app.post('/login', (req, res) => {
+  const user = {
+    emial: req.body.email,
+    password: req.body.password
+  }
+
+  // validation
+  let errors = {}
+  if (isEmpty(user.emial)) errors = "Must not be empty"
+  if (isEmpty(user.password)) errors = "Must not be empty"
+
+  if (Object.keys(errors).length > 0) return res.status(400).json(errors)
+
+  firebase.auth().signInWithEmailAndPassword(user.emial, user.password)
+    .then(data => {
+      return data.user.getIdToken()
+    })
+    .then(token => {
+      return res.json({ token })
+    })
+    .catch(err => {
+      console.error(err)
+      if (err.code === "auth/wrong-password") {
+        return res.status(403).json({ general: "Wrong credential, try again" })
+      }
+      return res.status(500).json({ error: err.code })
     })
 })
 
