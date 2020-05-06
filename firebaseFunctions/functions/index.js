@@ -61,5 +61,24 @@ app.post('/scream', (req, res) => {
     })
 })
 
+// Signup
+app.post('/signup', (req, res) => {
+  const newUser = {
+    email: req.body.email,
+    password: req.body.password,
+    confirmPassword: req.body.confirmPassword,
+    handle: req.body.handle
+  }
+
+  firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
+    .then(data => {
+      return res.status(201).json({ message: `user ${data.user.uid} signed up successfully` })
+    })
+    .catch(err => {
+      console.error(err)
+      return res.status(500).json({ message: err.code })
+    })
+})
+
 // APIを設定したexpressをセット
 exports.api = functions.region("asia-northeast1").https.onRequest(app)
