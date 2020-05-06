@@ -16,6 +16,7 @@ const firebaseConfig = {
 const firebase = require('firebase')
 firebase.initializeApp(firebaseConfig)
 
+const db = admin.firestore()
 const express = require('express')
 const app = express()
 
@@ -24,7 +25,7 @@ const app = express()
 
 // firestoreからscreamsを全件取得しレスポンスを返す
 app.get('/screams', (req, res) => {
-  admin.firestore().collection('screams')
+  db.collection('screams')
     .orderBy('createdAt', 'desc')
     .get()
     .then(data => {
@@ -51,7 +52,7 @@ app.post('/scream', (req, res) => {
     createdAt: new Date().toISOString()
   }
 
-  admin.firestore().collection('screams').add(newScream)
+  db.collection('screams').add(newScream)
     .then(doc => {
       res.json({ message: `document ${doc.id} created successful` })
     })
@@ -62,6 +63,7 @@ app.post('/scream', (req, res) => {
 })
 
 // Signup
+let userId, userToken;
 app.post('/signup', (req, res) => {
   const newUser = {
     email: req.body.email,
@@ -70,13 +72,42 @@ app.post('/signup', (req, res) => {
     handle: req.body.handle
   }
 
-  firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
+  db.doc(`/users/${newUser.handle}`).get()
+    .then(doc => {
+      if (doc.exists) {
+        // validation
+        return res.status(400).json({ handle: "this handle is already taken" })
+      } else {
+        // ユーザーの作成
+        return firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
+      }
+    })
     .then(data => {
-      return res.status(201).json({ message: `user ${data.user.uid} signed up successfully` })
+      userId = data.user.uid
+      return data.user.getIdToken()
+    })
+    .then((token) => {
+      userToken = token
+      const userCredentail = {
+        handle: newUser.handle,
+        email: newUser.email,
+        createdAt: new Date().toISOString(),
+        userId
+      }
+
+      // add db
+      return db.doc(`/users/${newUser.handle}`).set(userCredentail)
+    })
+    .then(() => {
+      return res.status(201).json({ userToken })
     })
     .catch(err => {
       console.error(err)
-      return res.status(500).json({ message: err.code })
+      if (err.code === 'auth/email-already-in-use') {
+        return res.status(500).json({ email: "Email is already in use" })
+      } else {
+        return res.status(500).json({ message: err.code })
+      }
     })
 })
 
