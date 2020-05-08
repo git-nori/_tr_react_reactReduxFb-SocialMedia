@@ -13,6 +13,7 @@ const {
   getAllScreams,
   postOneScream,
   getScream,
+  deleteScream,
   commentOnScream,
   likeScream,
   unlikeScream
@@ -28,6 +29,7 @@ const {
 app.get('/screams', getAllScreams)
 app.post('/scream', FBAuth, postOneScream)
 app.get('/scream/:screamId', FBAuth, getScream)
+app.delete('/scream/:screamId', FBAuth, deleteScream)
 app.post('/scream/:screamId/comments', FBAuth, commentOnScream)
 app.post('/scream/:screamId/like', FBAuth, likeScream)
 app.post('/scream/:screamId/unlike', FBAuth, unlikeScream)
