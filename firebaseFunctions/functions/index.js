@@ -9,12 +9,13 @@ const app = express()
 
 const FBAuth = require('./util/fbAuth')
 
-const { getAllScreams, postOneScream, getScream } = require('./handlers/screams')
+const { getAllScreams, postOneScream, getScream, commentOnScream } = require('./handlers/screams')
 const { signup, login, uploadImage, addUserDetails, getAuthenticatedUser } = require('./handlers/users')
 
 app.get('/screams', getAllScreams)
 app.post('/scream', FBAuth, postOneScream)
 app.get('/scream/:screamId', FBAuth, getScream)
+app.post('/scream/:screamId/comments', FBAuth, commentOnScream)
 app.post('/user/image', FBAuth, uploadImage)
 app.post('/user', FBAuth, addUserDetails)
 app.post('/user', FBAuth, getAuthenticatedUser )
