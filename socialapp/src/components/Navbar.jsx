@@ -1,11 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { AppBar, Toolbar, Button } from '@material-ui/core'
+import { AppBar, Toolbar, Button, makeStyles } from '@material-ui/core'
 
 const Navbar = () => {
+  const classes = useStyles()
   return (
-    <AppBar position="static">
+    <AppBar position="static" className={classes.AppBar}>
       <Toolbar>
         <Button color="inherit" variant="outlined" component={Link} to="/login">Login</Button>
         <Button color="inherit" variant="outlined" component={Link} to="/">Home</Button>
@@ -14,5 +15,11 @@ const Navbar = () => {
     </AppBar>
   )
 }
+
+const useStyles = makeStyles({
+  AppBar:{
+    marginBottom: "1rem"
+  }
+})
 
 export default Navbar
