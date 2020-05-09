@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
 
 import { Card, CardContent, CardMedia, Typography, makeStyles } from '@material-ui/core'
 
@@ -11,7 +12,7 @@ const ScreamCards = ({screams}) => {
       const { body, screamId, userHandle, createdAt, likeCount, commentCount, userImage } = scream
 
       return (
-        <Card className={classes.card}>
+        <Card className={classes.card} key={screamId}>
           <CardMedia component="img" image={userImage} title="Profile image" className={classes.image} />
           <CardContent className={classes.content}>
             <Typography
@@ -23,7 +24,7 @@ const ScreamCards = ({screams}) => {
             >
               {userHandle}
             </Typography>
-            <Typography variant="body2" color="textSecondary">{createdAt}</Typography>
+            <Typography variant="body2" color="textSecondary">{moment(createdAt).fromNow()}</Typography>
             <Typography variant="body1">{body}</Typography>
           </CardContent>
         </Card>
