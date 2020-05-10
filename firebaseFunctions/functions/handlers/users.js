@@ -72,7 +72,7 @@ exports.login = (req, res) => {
 
   if (!valid) return res.status(400).json(errors)
 
-  firebase.auth().signInWithEmailAndPassword(user.emial, user.password)
+  firebase.auth().signInWithEmailAndPassword(user.email, user.password)
     .then(data => {
       return data.user.getIdToken()
     })
