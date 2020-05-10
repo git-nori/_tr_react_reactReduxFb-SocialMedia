@@ -1,4 +1,5 @@
 import React from 'react'
+import { loginUser } from '../userSlice'
 
 import LoginForms from './LoginForms'
 
@@ -11,7 +12,7 @@ const LoginPage = () => {
       <Grid container className={classes.root}>
         <Grid item sm></Grid>
         <Grid item sm>
-          <LoginForms />
+          <LoginForms loginUser={loginUser} />
         </Grid>
         <Grid item sm></Grid>
       </Grid>
