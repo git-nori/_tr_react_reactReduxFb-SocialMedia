@@ -2,7 +2,6 @@ import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 
 const AuthRoute = ({ component: Component, isAuthenticated, redirectPath, ...rest }) => {
-  console.log(redirectPath)
   return (
     <Route
       {...rest}
