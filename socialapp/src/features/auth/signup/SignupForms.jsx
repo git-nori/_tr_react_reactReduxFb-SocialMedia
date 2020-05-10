@@ -1,20 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, Link } from 'react-router-dom'
-import axios from 'axios'
 
 import { makeStyles, Typography, FormControl, TextField, Button, Box, CircularProgress } from '@material-ui/core'
 
-const SignupForms = () => {
+const SignupForms = ({ signupUser }) => {
   const classes = useStyles()
 
   const history = useHistory()
+  const dispatch = useDispatch()
+
+  const loading = useSelector(state => state.ui.loading)
+  const uiErrors = useSelector(state => state.ui.errors)
 
   const [handle, setHandle] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
-  const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
+
+  useEffect(() => {
+    if(uiErrors){
+      setErrors(uiErrors)
+    }
+  }, [uiErrors])
 
   const hdlOnChange = (e) => {
     switch (e.target.id) {
@@ -36,25 +45,13 @@ const SignupForms = () => {
   }
 
   const hdlOnSubmit = () => {
-    setLoading(true)
     const userData = {
       email,
       password,
       confirmPassword,
       handle
     }
-    axios.post('/signup', userData)
-      .then(res => {
-        console.log(res.data)
-        // localStorageにTokenを保存
-        localStorage.setItem('FBIdToken', `Bearer ${res.data.userToken}`)
-        setLoading(false)
-        history.push('/')
-      })
-      .catch(err => {
-        setLoading(false)
-        setErrors(err.response.data)
-      })
+    dispatch(signupUser(userData, history))
   }
 
   const renderAlert = () => {
