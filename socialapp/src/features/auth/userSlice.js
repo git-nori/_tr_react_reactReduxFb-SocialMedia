@@ -8,13 +8,17 @@ const initialState = {
   authenticated: false,
   credentials: {},
   likes: [],
-  notifications: []
+  notifications: [],
+  loading: false
 }
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    loadingUser(state, action) {
+      state.loading = true
+    },
     setAuthenticated (state, action) {
       state.authenticated = true
     },
@@ -23,6 +27,7 @@ const userSlice = createSlice({
     },
     setUser (state, action) {
       state.authenticated = true
+      state.loading = false
       // credentials, likes, notificationsを格納
       const {credentials, likes, notifications} = action.payload
       state.credentials = credentials
@@ -33,6 +38,7 @@ const userSlice = createSlice({
 })
 
 export const {
+  loadingUser,
   setUser,
   setUnAuthenticated,
   setAuthenticated
@@ -89,6 +95,7 @@ export const signupUser = (userData, history) => dispatch => {
 
 // ユーザー情報を取得
 export const getUserData = () => dispatch => {
+  dispatch(loadingUser())
   axios.get('/user')
     .then(res => {
       dispatch(setUser(res.data))
