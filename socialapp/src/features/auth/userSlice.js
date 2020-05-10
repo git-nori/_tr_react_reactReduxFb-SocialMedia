@@ -47,8 +47,6 @@ export const loginUser = (userData, history) => dispatch => {
 
   axios.post('/login', userData)
     .then(res => {
-      console.log(res.data)
-
       // 認証情報をlocalstorage, axiosの共通ヘッダにセット
       setAuthorizationHeader(res.data.token)
 
@@ -76,8 +74,6 @@ export const signupUser = (userData, history) => dispatch => {
 
   axios.post('/signup', userData)
     .then(res => {
-      console.log(res.data)
-
       setAuthorizationHeader(res.data.token)
 
       dispatch(getUserData())
@@ -104,5 +100,5 @@ export const getUserData = () => dispatch => {
 const setAuthorizationHeader = token => {
   const FBIdToken = `Bearer ${token}`
   localStorage.setItem('FBIdToken', FBIdToken)
-  axios.defaults.headers.common['Authorization'] = FBIdToken
+  axios.defaults.headers.common = {'Authorization': FBIdToken}
 }
