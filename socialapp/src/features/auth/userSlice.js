@@ -63,6 +63,13 @@ export const loginUser = (userData, history) => dispatch => {
     })
 }
 
+export const logoutUser = () => dispatch => {
+  // localstorageからデータを削除, axiosの共通ヘッダを削除
+  localStorage.removeItem('FBIdToken')
+  delete axios.defaults.headers.common
+  dispatch(setUnAuthenticated())
+}
+
 // Signup処理
 export const signupUser = (userData, history) => dispatch => {
   dispatch(loadingUi())
