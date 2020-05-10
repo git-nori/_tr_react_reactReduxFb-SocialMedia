@@ -17,6 +17,11 @@ function App () {
   const history = useHistory()
   const isAuthenticated = useSelector(state => state.user.authenticated)
 
+  const hdlClkLogout = () => {
+    dispatch(logoutUser())
+    history.push('/login')
+  }
+
   // localStorageからtokenを取得
   const token = localStorage.getItem('FBIdToken')
   if (token) {
@@ -27,14 +32,14 @@ function App () {
       history.push("/login")
     } else {
       dispatch(setAuthenticated())
-      axios.defaults.headers.common['Authorization'] = token
+      axios.defaults.headers.common = {'Authorization': token}
       dispatch(getUserData())
     }
   }
 
   return (
     <div className="App">
-      <Navbar />
+      <Navbar logout={hdlClkLogout}/>
       <Switch>
         <Route exact path="/" component={HomePage} />
         <AuthRoute
