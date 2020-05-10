@@ -38,7 +38,7 @@ exports.signup = (req, res) => {
     })
     .then((token) => {
       userToken = token
-      const userCredentail = {
+      const userCredential = {
         handle: newUser.handle,
         email: newUser.email,
         createdAt: new Date().toISOString(),
@@ -47,7 +47,7 @@ exports.signup = (req, res) => {
       }
 
       // add db
-      return db.doc(`/users/${newUser.handle}`).set(userCredentail)
+      return db.doc(`/users/${newUser.handle}`).set(userCredential)
     })
     .then(() => {
       return res.status(201).json({ userToken })
@@ -94,7 +94,7 @@ exports.getAuthenticatedUser = (req, res) => {
   db.doc(`/users/${req.user.handle}`).get()
     .then(doc => {
       if (doc.exists) {
-        userData.credentails = doc.data()
+        userData.credentials = doc.data()
         return db.collection('likes').where('userHandle', '==', req.user.handle).get()
       }
     })
