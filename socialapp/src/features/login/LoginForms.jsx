@@ -36,6 +36,8 @@ const LoginForms = () => {
     axios.post('/login', userData)
       .then(res => {
         setLoading(false)
+        // localStorageにTokenを保存
+        localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`)
         console.log(res.data)
         history.push('/')
       })
