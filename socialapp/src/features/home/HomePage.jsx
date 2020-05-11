@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
-import { uploadImage } from '../auth/userSlice'
+import { uploadImage, logoutUser } from '../auth/userSlice'
 
 import ScreamCards from './ScreamCards'
 import Profile from './Profile'
@@ -31,7 +31,12 @@ const HomePage = () => {
     <Container>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={8}>{renderRecentScreamsMarkup()}</Grid>
-        <Grid item xs={12} sm={4}><Profile uploadImage={(formData) => { dispatch(uploadImage(formData)) }} /></Grid>
+        <Grid item xs={12} sm={4}>
+          <Profile
+            logout={() => { dispatch(logoutUser()) }}
+            uploadImage={(formData) => { dispatch(uploadImage(formData)) }}
+          />
+        </Grid>
       </Grid>
     </Container>
   )

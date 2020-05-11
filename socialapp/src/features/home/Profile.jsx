@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom'
 import moment from 'moment'
 
 import { Paper, Link as MUILink, Typography, Button, Box, makeStyles, Tooltip, IconButton } from '@material-ui/core'
-import { LocationOn, Link as LinkIcon, CalendarToday, Edit } from '@material-ui/icons'
+import { LocationOn, Link as LinkIcon, CalendarToday, Edit, SubdirectoryArrowLeft } from '@material-ui/icons'
 
-const Profile = ({uploadImage}) => {
+const Profile = ({ uploadImage, logout }) => {
   const classes = useStyls()
   const loading = useSelector(state => state.user.loading)
   const authenticated = useSelector(state => state.user.authenticated)
@@ -83,6 +83,14 @@ const Profile = ({uploadImage}) => {
               <span>Joined {moment(createdAt).format('MMM YYYY')}</span>
             </Box>
           </div>
+
+          <div className={classes.logout}>
+            <Box mb={2} className={classes.wrapIcon}>
+              <IconButton onClick={()=>{logout()}}>
+                <SubdirectoryArrowLeft color="primary" fontSize="small" />
+              </IconButton>
+            </Box>
+          </div>
         </Paper>
       )
       : (
@@ -128,6 +136,9 @@ const useStyls = makeStyles({
     display: "inline-flex",
     alignItems: "center"
   },
+  logout: {
+    textAlign: "left",
+  }
 })
 
 export default Profile
