@@ -112,6 +112,15 @@ export const uploadImage = formData => dispatch => {
     .catch(err => console.log(err))
 }
 
+export const editUserDetails = userDetails => dispatch => {
+  dispatch(loadingUser())
+  axios.post('/user', userDetails)
+    .then(res => {
+      dispatch(getUserData())
+    })
+    .catch(err => console.log(err))
+}
+
 // 認証情報をlocalstorage, axiosの共通ヘッダにセット
 const setAuthorizationHeader = token => {
   const FBIdToken = `Bearer ${token}`

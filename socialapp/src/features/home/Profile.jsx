@@ -1,13 +1,14 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import moment from 'moment'
 
 import { Paper, Link as MUILink, Typography, Button, Box, makeStyles, Tooltip, IconButton } from '@material-ui/core'
 import { LocationOn, Link as LinkIcon, CalendarToday, Edit, SubdirectoryArrowLeft } from '@material-ui/icons'
+import EditDetails from './EditDetails'
 
-const Profile = ({ uploadImage, logout }) => {
+const Profile = ({ uploadImage, logout, editUserDetails }) => {
   const classes = useStyls()
   const loading = useSelector(state => state.user.loading)
   const authenticated = useSelector(state => state.user.authenticated)
@@ -86,9 +87,10 @@ const Profile = ({ uploadImage, logout }) => {
 
           <div className={classes.logout}>
             <Box mb={2} className={classes.wrapIcon}>
-              <IconButton onClick={()=>{logout()}}>
+              <IconButton onClick={() => { logout() }}>
                 <SubdirectoryArrowLeft color="primary" fontSize="small" />
               </IconButton>
+              <EditDetails editUserDetails={editUserDetails} />
             </Box>
           </div>
         </Paper>
