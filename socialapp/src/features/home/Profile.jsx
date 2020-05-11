@@ -1,17 +1,25 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import moment from 'moment'
 
-import { Paper, Link as MUILink, Typography, Button, Box, makeStyles } from '@material-ui/core'
-import { LocationOn, Link as LinkIcon, CalendarToday } from '@material-ui/icons'
+import { Paper, Link as MUILink, Typography, Button, Box, makeStyles, Tooltip, IconButton } from '@material-ui/core'
+import { LocationOn, Link as LinkIcon, CalendarToday, Edit } from '@material-ui/icons'
 
-const Profile = () => {
+const Profile = ({uploadImage}) => {
   const classes = useStyls()
   const loading = useSelector(state => state.user.loading)
   const authenticated = useSelector(state => state.user.authenticated)
   const { bio, location, website, email, userId, imageUrl, createdAt, handle } = useSelector(state => state.user.credentials)
+
+  const hdlImageChg = event => {
+    const image = event.target.files[0]
+    const formData = new FormData()
+    formData.append('image', image, image.name)
+    uploadImage(formData)
+  }
+
   const render = () => {
     if (loading) {
       return <p>...loading</p>
@@ -21,6 +29,16 @@ const Profile = () => {
         <Paper className={classes.profile}>
           <Box mb={2}>
             <img className={classes.profileImage} src={imageUrl} alt="profile" />
+            <Tooltip title="edit profile image" placement="top">
+              <IconButton onClick={() => { document.getElementById('imageInput').click() }}>
+                <Edit color="primary" />
+                <input
+                  type="file"
+                  id="imageInput"
+                  hidden="hidden"
+                  onChange={hdlImageChg} />
+              </IconButton>
+            </Tooltip>
           </Box>
 
           <Box mb={2}>
@@ -103,12 +121,13 @@ const useStyls = makeStyles({
   },
   profileImage: {
     width: "6.5rem",
-    borderRadius: "50%"
+    borderRadius: "50%",
+    marginLeft: "4rem"
   },
   wrapIcon: {
     display: "inline-flex",
     alignItems: "center"
-  }
+  },
 })
 
 export default Profile

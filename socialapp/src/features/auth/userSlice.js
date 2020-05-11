@@ -16,7 +16,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    loadingUser(state, action) {
+    loadingUser (state, action) {
       state.loading = true
     },
     setAuthenticated (state, action) {
@@ -29,7 +29,7 @@ const userSlice = createSlice({
       state.authenticated = true
       state.loading = false
       // credentials, likes, notificationsを格納
-      const {credentials, likes, notifications} = action.payload
+      const { credentials, likes, notifications } = action.payload
       state.credentials = credentials
       state.likes = likes
       state.notifications = notifications
@@ -103,9 +103,18 @@ export const getUserData = () => dispatch => {
     .catch(err => console.error(err))
 }
 
+export const uploadImage = formData => dispatch => {
+  dispatch(loadingUser())
+  axios.post('/user/image', formData)
+    .then(res => {
+      dispatch(getUserData())
+    })
+    .catch(err => console.log(err))
+}
+
 // 認証情報をlocalstorage, axiosの共通ヘッダにセット
 const setAuthorizationHeader = token => {
   const FBIdToken = `Bearer ${token}`
   localStorage.setItem('FBIdToken', FBIdToken)
-  axios.defaults.headers.common = {'Authorization': FBIdToken}
+  axios.defaults.headers.common = { 'Authorization': FBIdToken }
 }
