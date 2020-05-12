@@ -39,7 +39,7 @@ function App () {
 
   return (
     <div className="App">
-      <Navbar logout={hdlClkLogout}/>
+      <Navbar logout={hdlClkLogout} isAuthenticated={isAuthenticated}/>
       <Switch>
         <Route exact path="/" component={HomePage} />
         <AuthRoute
