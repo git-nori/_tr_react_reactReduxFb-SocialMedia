@@ -34,6 +34,16 @@ const userSlice = createSlice({
       state.likes = likes
       state.notifications = notifications
     },
+    likeScream (state, action) {
+      const likes = {
+        userHandle: state.credentials.handle,
+        screamId: action.payload
+      }
+      state.likes.push(likes)
+    },
+    unlikeScream (state, action) {
+      state.likes = state.likes.filter(like => like.screamId !== action.payload)
+    },
   },
 })
 
@@ -41,7 +51,9 @@ export const {
   loadingUser,
   setUser,
   setUnAuthenticated,
-  setAuthenticated
+  setAuthenticated,
+  likeScream,
+  unlikeScream
 } = userSlice.actions
 
 export default userSlice.reducer
