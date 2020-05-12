@@ -28,10 +28,10 @@ const Profile = ({ uploadImage, logout, editUserDetails }) => {
     return authenticated
       ? (
         <Paper className={classes.profile}>
-          <Box mb={2}>
+          <Box mb={2} className={classes.profileBox}>
             <img className={classes.profileImage} src={imageUrl} alt="profile" />
             <Tooltip title="edit profile image" placement="top">
-              <IconButton onClick={() => { document.getElementById('imageInput').click() }}>
+              <IconButton onClick={() => { document.getElementById('imageInput').click() }} className={classes.profileIcon}>
                 <Edit color="primary" />
                 <input
                   type="file"
@@ -129,10 +129,17 @@ const useStyls = makeStyles({
   profile: {
     textAlign: "center"
   },
+  profileBox: {
+    position:"relative"
+  },
+  profileIcon: {
+    position: "absolute",
+    right: "15%",
+    top: "50%"
+  },
   profileImage: {
-    width: "6.5rem",
+    maxWidth: "5rem",
     borderRadius: "50%",
-    marginLeft: "4rem"
   },
   wrapIcon: {
     display: "inline-flex",
