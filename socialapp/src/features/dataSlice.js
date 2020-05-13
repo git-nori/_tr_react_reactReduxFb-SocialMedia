@@ -21,6 +21,7 @@ const dataSlice = createSlice({
     setLikeUnlikeScream(state,action) {
       let index = state.screams.findIndex(scream => scream.screamId === action.payload.screamId)
       state.screams[index] = action.payload
+      state.loading = false
     }
   }
 })
@@ -46,7 +47,7 @@ export const likeScream = screamId => dispatch => {
     .catch(err => console.error(err))
 }
 
-export const unLikeScream = screamId => dispatch => {
+export const unlikeScream = screamId => dispatch => {
   dispatch(loadingData())
   axios.post(`/scream/${screamId}/unlike`)
     .then(res => {
