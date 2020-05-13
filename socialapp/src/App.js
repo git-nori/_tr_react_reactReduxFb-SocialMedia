@@ -5,6 +5,7 @@ import jwtDecode from 'jwt-decode'
 import axios from 'axios'
 
 import { setAuthenticated, logoutUser, getUserData } from './features/auth/userSlice'
+import { asyncPostScream } from './features/dataSlice'
 
 import AuthRoute from './components/AuthRoute'
 import Navbar from './components/Navbar'
@@ -20,6 +21,10 @@ function App () {
   const hdlClkLogout = () => {
     dispatch(logoutUser())
     history.push('/login')
+  }
+
+  const hdlClkPostScream = (newScream) => {
+    dispatch(asyncPostScream(newScream))
   }
 
   // localStorageからtokenを取得
@@ -39,7 +44,7 @@ function App () {
 
   return (
     <div className="App">
-      <Navbar logout={hdlClkLogout} isAuthenticated={isAuthenticated}/>
+      <Navbar logout={hdlClkLogout} isAuthenticated={isAuthenticated} postScream={hdlClkPostScream} />
       <Switch>
         <Route exact path="/" component={HomePage} />
         <AuthRoute

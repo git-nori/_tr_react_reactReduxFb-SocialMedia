@@ -1,18 +1,19 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+import PostScream from '../features/home/PostScream'
 import TooltipIconbtn from './TooltipIconbtn'
 import { AppBar, Toolbar, Box, makeStyles } from '@material-ui/core'
-import { Add, Home, Notifications, ExitToApp, AccountBox } from '@material-ui/icons'
+import { Home, Notifications, ExitToApp, AccountBox } from '@material-ui/icons'
 
-const Navbar = ({ logout, isAuthenticated }) => {
+const Navbar = ({ logout, isAuthenticated, postScream }) => {
   const classes = useStyles()
 
   const renderBtn = () => {
     return isAuthenticated
       ? (
         <Box className={classes.appBarBtn}>
-          <TooltipIconbtn tip={"Post a Scream!"}><Add /></TooltipIconbtn>
+          <PostScream postScream={postScream}/>
           <Link to="/">
             <TooltipIconbtn tip={"Home"}><Home /></TooltipIconbtn>
           </Link>
