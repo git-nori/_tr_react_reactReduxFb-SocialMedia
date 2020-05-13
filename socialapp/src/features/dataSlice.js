@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { setErrors, clearErrors } from './uiSlice'
 
 const initialState = {
   screams: [],
@@ -25,6 +26,10 @@ const dataSlice = createSlice({
     },
     setScreamsByDelete (state, action) {
       state.screams = state.screams.filter(scream => scream.screamId !== action.payload)
+    },
+    postScream(state,action) {
+      state.screams.unshift(action.payload)
+      state.loading = false
     }
   }
 })
@@ -39,6 +44,18 @@ export const getScreams = () => dispatch => {
     .catch(err => {
       dispatch(setScreams([]))
     })
+}
+
+export const asyncPostScream = (newScream) => dispatch => {
+  dispatch(loadingData())
+  axios.post('/scream', newScream)
+  .then(res => {
+    dispatch(postScream(res.data))
+    dispatch(clearErrors())
+  })
+  .catch(err => {
+    dispatch(setErrors(err.response.data))
+  })
 }
 
 export const likeScream = screamId => dispatch => {
@@ -72,7 +89,8 @@ export const {
   loadingData,
   setScreams,
   setLikeUnlikeScream,
-  setScreamsByDelete
+  setScreamsByDelete,
+  postScream
 } = dataSlice.actions
 
 export default dataSlice.reducer
