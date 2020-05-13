@@ -1,11 +1,45 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 
-import { Card, CardContent, CardMedia, Typography, makeStyles } from '@material-ui/core'
+import TooltipIconbtn from '../../components/TooltipIconbtn'
+import { Card, CardContent, CardMedia, Typography, Box, makeStyles } from '@material-ui/core'
+import { Chat, Favorite, FavoriteBorder } from '@material-ui/icons'
 
-const ScreamCards = ({screams}) => {
+const ScreamCards = ({ screams, user, likeScream, unlikeScream }) => {
   const classes = useStyles()
+
+  const { authenticated, credentials, likes, notifications, loading } = user
+
+  // 既にLike済みか判定する
+  const islikedScream = screamId => {
+    if (likes && likes.find(like => like.screamId === screamId)) {
+      return true
+    }
+    return false
+  }
+
+  const renderLikedBtn = screamId => {
+    return !authenticated
+      ? (
+        <TooltipIconbtn tip="Like">
+          <Link to="/login">
+            <FavoriteBorder color="primary" />
+          </Link>
+        </TooltipIconbtn>
+      ) : (
+        islikedScream(screamId)
+          ? (
+            <TooltipIconbtn tip="Undo like" onClick={() => { unlikeScream(screamId) }}>
+              <Favorite color="primary" />
+            </TooltipIconbtn>
+          ) : (
+            <TooltipIconbtn tip="Do like" onClick={() => { likeScream(screamId) }}>
+              <FavoriteBorder color="primary" />
+            </TooltipIconbtn>
+          )
+      )
+  }
 
   const renderCard = () => {
     return screams.map(scream => {
@@ -26,6 +60,14 @@ const ScreamCards = ({screams}) => {
             </Typography>
             <Typography variant="body2" color="textSecondary">{moment(createdAt).fromNow()}</Typography>
             <Typography variant="body1">{body}</Typography>
+            <Box ml={-2}>
+              {renderLikedBtn(screamId)}
+              <span>{likeCount}</span>
+              <TooltipIconbtn tip={"comments"}>
+                <Chat color="primary" />
+              </TooltipIconbtn>
+              <span>{commentCount}</span>
+            </Box>
           </CardContent>
         </Card>
       )

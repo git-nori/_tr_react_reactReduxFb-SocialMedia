@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { useDispatch } from 'react-redux'
-import { uploadImage, logoutUser, editUserDetails } from '../auth/userSlice'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { uploadImage, logoutUser, editUserDetails, likeScream as setLikesByLike, unlikeScream as setLikesByUnlike } from '../auth/userSlice'
+import { getScreams, likeScream, unlikeScream } from '../dataSlice'
 
 import ScreamCards from './ScreamCards'
 import Profile from './Profile'
@@ -9,22 +9,33 @@ import Profile from './Profile'
 import { Container, Grid } from '@material-ui/core'
 
 const HomePage = () => {
-  const [screams, setScreams] = useState(null)
+  const user = useSelector(state => state.user)
+  const screams = useSelector(state => state.data.screams)
+  const loading = useSelector(state => state.data.loading)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    axios.get('/screams')
-      .then(res => {
-        setScreams(res.data)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    dispatch(getScreams())
   }, [])
 
+  const hdlLikeScream = (screamId) => {
+    dispatch(likeScream(screamId))
+    dispatch(setLikesByLike(screamId))
+  }
+
+  const hdlUnlikeScream = (screamId) => {
+    dispatch(unlikeScream(screamId))
+    dispatch(setLikesByUnlike(screamId))
+  }
+
   const renderRecentScreamsMarkup = () => {
-    return !screams ?
-      <p>...loading</p> : <ScreamCards screams={screams} />
+    return loading
+      ? <p>...loading</p>
+      : <ScreamCards
+        user={user}
+        screams={screams}
+        likeScream={hdlLikeScream}
+        unlikeScream={hdlUnlikeScream} />
   }
 
   return (
@@ -35,7 +46,7 @@ const HomePage = () => {
           <Profile
             logout={() => { dispatch(logoutUser()) }}
             uploadImage={(formData) => { dispatch(uploadImage(formData)) }}
-            editUserDetails={(userDetails)=>{dispatch(editUserDetails(userDetails))}}
+            editUserDetails={(userDetails) => { dispatch(editUserDetails(userDetails)) }}
           />
         </Grid>
       </Grid>
