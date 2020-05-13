@@ -11,7 +11,7 @@ import { Container, Grid } from '@material-ui/core'
 const HomePage = () => {
   const user = useSelector(state => state.user)
   const screams = useSelector(state => state.data.screams)
-  const loading = useSelector(state => state.data.loading)
+  const loading = useSelector(state => state.ui.loading)
   const dispatch = useDispatch()
 
   useEffect(() => {

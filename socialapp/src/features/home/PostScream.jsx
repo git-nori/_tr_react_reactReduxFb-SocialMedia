@@ -12,7 +12,7 @@ const PostScream = ({ postScream }) => {
   const [errors, setErrors] = useState({})
 
   const uiErrors = useSelector(state => state.ui.errors)
-  const loading = useSelector(state => state.data.loading)
+  const loading = useSelector(state => state.ui.loading)
 
   useEffect(() => {
     if(uiErrors){

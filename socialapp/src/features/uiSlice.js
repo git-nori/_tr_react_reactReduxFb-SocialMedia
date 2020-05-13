@@ -20,13 +20,17 @@ const uiSlice = createSlice({
     loadingUi (state, action) {
       state.loading = true
     },
+    stopLoadingUi(state,action){
+      state.loading = false
+    }
   }
 })
 
 export const {
   setErrors,
   clearErrors,
-  loadingUi
+  loadingUi,
+  stopLoadingUi
 } = uiSlice.actions
 
 export default uiSlice.reducer
