@@ -11,17 +11,20 @@ const dataSlice = createSlice({
   name: 'data',
   initialState,
   reducers: {
-    loadingData(state, action) {
+    loadingData (state, action) {
       state.loading = true
     },
-    setScreams(state, action) {
+    setScreams (state, action) {
       state.screams = action.payload
       state.loading = false
     },
-    setLikeUnlikeScream(state,action) {
+    setLikeUnlikeScream (state, action) {
       let index = state.screams.findIndex(scream => scream.screamId === action.payload.screamId)
       state.screams[index] = action.payload
       state.loading = false
+    },
+    setScreamsByDelete (state, action) {
+      state.screams = state.screams.filter(scream => scream.screamId !== action.payload)
     }
   }
 })
@@ -56,10 +59,20 @@ export const unlikeScream = screamId => dispatch => {
     .catch(err => console.error(err))
 }
 
+export const deleteScream = screamId => dispatch => {
+  console.log(`/scream/${screamId}`)
+  axios.delete(`/scream/${screamId}`)
+    .then(() => {
+      dispatch(setScreamsByDelete(screamId))
+    })
+    .catch(err => console.log(err))
+}
+
 export const {
   loadingData,
   setScreams,
-  setLikeUnlikeScream
+  setLikeUnlikeScream,
+  setScreamsByDelete
 } = dataSlice.actions
 
 export default dataSlice.reducer

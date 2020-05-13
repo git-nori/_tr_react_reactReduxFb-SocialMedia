@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { uploadImage, logoutUser, editUserDetails, likeScream as setLikesByLike, unlikeScream as setLikesByUnlike } from '../auth/userSlice'
-import { getScreams, likeScream, unlikeScream } from '../dataSlice'
+import { getScreams, likeScream, unlikeScream, deleteScream } from '../dataSlice'
 
 import ScreamCards from './ScreamCards'
 import Profile from './Profile'
@@ -17,6 +17,10 @@ const HomePage = () => {
   useEffect(() => {
     dispatch(getScreams())
   }, [])
+
+  const hdlDelScream = (screamId) => {
+    dispatch(deleteScream(screamId))
+  }
 
   const hdlLikeScream = (screamId) => {
     dispatch(likeScream(screamId))
@@ -35,7 +39,8 @@ const HomePage = () => {
         user={user}
         screams={screams}
         likeScream={hdlLikeScream}
-        unlikeScream={hdlUnlikeScream} />
+        unlikeScream={hdlUnlikeScream}
+        deleteScream={hdlDelScream} />
   }
 
   return (

@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 
+import DeleteScream from './DeleteScream'
 import TooltipIconbtn from '../../components/TooltipIconbtn'
 import { Card, CardContent, CardMedia, Typography, Box, makeStyles } from '@material-ui/core'
 import { Chat, Favorite, FavoriteBorder } from '@material-ui/icons'
 
-const ScreamCards = ({ screams, user, likeScream, unlikeScream }) => {
+const ScreamCards = ({ screams, user, likeScream, unlikeScream,deleteScream }) => {
   const classes = useStyles()
 
   const { authenticated, credentials, likes, notifications, loading } = user
@@ -41,6 +42,14 @@ const ScreamCards = ({ screams, user, likeScream, unlikeScream }) => {
       )
   }
 
+  const renderDelBtn = (screamId, userHandle) => {
+    if (authenticated && credentials.handle === userHandle){
+      return (
+        <DeleteScream screamId={screamId} deleteScream={deleteScream} />
+      )
+    }
+  }
+
   const renderCard = () => {
     return screams.map(scream => {
       const { body, screamId, userHandle, createdAt, likeCount, commentCount, userImage } = scream
@@ -67,6 +76,7 @@ const ScreamCards = ({ screams, user, likeScream, unlikeScream }) => {
                 <Chat color="primary" />
               </TooltipIconbtn>
               <span>{commentCount}</span>
+              {renderDelBtn(screamId, userHandle)}
             </Box>
           </CardContent>
         </Card>
