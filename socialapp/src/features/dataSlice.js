@@ -44,6 +44,18 @@ export const getScreams = () => dispatch => {
     })
 }
 
+export const getScream = (screamId) => dispatch => {
+  dispatch(loadingUi())
+  axios.get(`/scream/${screamId}`)
+  .then(res => {
+    dispatch(setScream(res.data))
+    dispatch(stopLoadingUi())
+  })
+  .then(err => {
+    console.log(err)
+    dispatch(stopLoadingUi())
+  })
+}
 
 export const asyncPostScream = (newScream) => dispatch => {
   dispatch(loadingUi())
