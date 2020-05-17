@@ -120,6 +120,20 @@ export const thunkSubmitComment = (screamId, commentData) => dispatch => {
     })
 }
 
+// userが投稿したscreamsを取得する
+export const getUserData = (userHandle) => dispatch => {
+  dispatch(loadingUi())
+  axios.get(`/user/${userHandle}`)
+  .then(res => {
+    setScreams(res.data.screams)
+    dispatch(stopLoadingUi())
+  })
+  .catch(err => {
+    setScreams(null)
+    dispatch(stopLoadingUi())
+  })
+}
+
 export const {
   setScreams,
   setLikeUnlikeScream,
