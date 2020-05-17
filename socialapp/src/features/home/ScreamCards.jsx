@@ -49,7 +49,7 @@ const ScreamCards = ({ screams, user, likeScream, unlikeScream,deleteScream }) =
               </TooltipIconbtn>
               <span>{commentCount}</span>
               {renderDelBtn(screamId, userHandle)}
-              <ScreamDialog scream={scream}/>
+              <ScreamDialog scream={scream} likes={likes} authenticated={authenticated} likeScream={likeScream} unlikeScream={unlikeScream}/>
             </Box>
           </CardContent>
         </Card>
