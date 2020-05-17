@@ -72,28 +72,22 @@ export const asyncPostScream = (newScream) => dispatch => {
 }
 
 export const likeScream = screamId => dispatch => {
-  dispatch(loadingUi())
   axios.post(`/scream/${screamId}/like`)
     .then(res => {
       dispatch(setLikeUnlikeScream(res.data))
-      dispatch(stopLoadingUi())
     })
     .catch(err => {
       console.error(err)
-      dispatch(stopLoadingUi())
     })
 }
 
 export const unlikeScream = screamId => dispatch => {
-  dispatch(loadingUi())
   axios.post(`/scream/${screamId}/unlike`)
     .then(res => {
       dispatch(setLikeUnlikeScream(res.data))
-      dispatch(stopLoadingUi())
     })
     .catch(err => {
       console.error(err)
-      dispatch(stopLoadingUi())
     })
 }
 
