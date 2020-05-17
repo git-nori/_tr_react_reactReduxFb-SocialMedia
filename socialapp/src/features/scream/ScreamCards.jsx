@@ -9,10 +9,10 @@ import TooltipIconbtn from '../../components/TooltipIconbtn'
 import { Card, CardContent, CardMedia, Typography, Box, makeStyles } from '@material-ui/core'
 import { Chat } from '@material-ui/icons'
 
-const ScreamCards = ({ screams, user, getScream, likeScream, unlikeScream, deleteScream }) => {
+const ScreamCards = ({ screams, scream, user, errors, loading, getScream, likeScream, unlikeScream, deleteScream, submitComment }) => {
   const classes = useStyles()
 
-  const { authenticated, credentials, likes, notifications, loading } = user
+  const { authenticated, credentials, likes, notifications } = user
 
   const renderDelBtn = (screamId, userHandle) => {
     if (authenticated && credentials.handle === userHandle) {
@@ -23,8 +23,8 @@ const ScreamCards = ({ screams, user, getScream, likeScream, unlikeScream, delet
   }
 
   const renderCard = () => {
-    return screams.map(scream => {
-      const { body, screamId, userHandle, createdAt, likeCount, commentCount, userImage } = scream
+    return screams.map(screamsData => {
+      const { body, screamId, userHandle, createdAt, likeCount, commentCount, userImage } = screamsData
 
       return (
         <Card className={classes.card} key={screamId}>
@@ -49,13 +49,18 @@ const ScreamCards = ({ screams, user, getScream, likeScream, unlikeScream, delet
               </TooltipIconbtn>
               <span>{commentCount}</span>
               {renderDelBtn(screamId, userHandle)}
-              <ScreamDialog 
-              screamId={screamId} 
-              likes={likes} 
-              authenticated={authenticated} 
-              likeScream={likeScream} 
-              unlikeScream={unlikeScream} 
-              getScream={getScream}/>
+              <ScreamDialog
+                scream={screamsData}
+                comments={scream.comments}
+                screamId={screamId}
+                likes={likes}
+                authenticated={authenticated}
+                likeScream={likeScream}
+                unlikeScream={unlikeScream}
+                getScream={getScream}
+                submitComment={submitComment}
+                errors={errors}
+                loading={loading} />
             </Box>
           </CardContent>
         </Card>

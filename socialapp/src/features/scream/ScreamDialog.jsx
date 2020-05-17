@@ -1,21 +1,31 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 
 import LikeBtn from './LikeBtn'
 import TooltipIconbtn from '../../components/TooltipIconbtn'
 import Comments from './Comments'
+import CommentForm from './CommentForm'
 import { Dialog, DialogContent, CircularProgress, makeStyles, Grid, Typography, Box } from '@material-ui/core'
 import { Close, Chat, UnfoldMore } from '@material-ui/icons'
 
-const ScreamDialog = ({ screamId, likes, authenticated, getScream, likeScream, unlikeScream }) => {
+const ScreamDialog = ({ 
+  scream,
+  comments,
+  screamId,
+  likes,
+  authenticated,
+  errors,
+  loading,
+  getScream,
+  likeScream,
+  unlikeScream,
+  submitComment }) => {
   const classes = usestyles()
   const [open, setOpen] = useState(false)
 
-  const loading = useSelector(state => state.ui.loading)
-  const { body, credentials, createdAt, likeCount, commentCount, userImage, userHandle, comments } = useSelector(state => state.data.scream)
-  
+  const { body, credentials, createdAt, likeCount, commentCount, userImage, userHandle } = scream
+
   const hdlOpen = () => {
     getScream(screamId)
     setOpen(true)
@@ -58,9 +68,9 @@ const ScreamDialog = ({ screamId, likes, authenticated, getScream, likeScream, u
               <span>{commentCount}</span>
             </Box>
           </Grid>
-          <hr className={classes.visibleSeparator}/>
+          <hr className={classes.visibleSeparator} />
 
-          <Comments comments={comments}/>
+          <Comments comments={comments} />
         </Grid>
       )
   }

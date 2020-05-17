@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { uploadImage, logoutUser, editUserDetails, likeScream as setLikesByLike, unlikeScream as setLikesByUnlike } from '../user/userSlice'
-import { getScreams, getScream, likeScream, unlikeScream, deleteScream } from './screamSlice'
+import { getScreams, getScream, likeScream, unlikeScream, deleteScream, thunkSubmitComment } from './screamSlice'
 
 import ScreamCards from './ScreamCards'
 import Profile from '../profile/Profile'
@@ -10,8 +10,8 @@ import { Container, Grid } from '@material-ui/core'
 
 const ScreamsPage = () => {
   const user = useSelector(state => state.user)
-  const screams = useSelector(state => state.data.screams)
-  const loading = useSelector(state => state.ui.loading)
+  const data = useSelector(state => state.data)
+  const ui = useSelector(state => state.ui)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -36,17 +36,25 @@ const ScreamsPage = () => {
     dispatch(getScream(screamId))
   }
 
+  const hdlSubmitComment = (screamId, data) => {
+    dispatch(thunkSubmitComment(screamId, data))
+  }
+
   const renderRecentScreamsMarkup = () => {
     // 初期表示時
-    return (loading && screams.length < 1)
+    return (ui.loading && data.screams.length < 1)
       ? <p>...loading</p>
       : <ScreamCards
         user={user}
-        screams={screams}
+        screams={data.screams}
+        scream={data.scream}
         likeScream={hdlLikeScream}
         unlikeScream={hdlUnlikeScream}
         deleteScream={hdlDelScream}
-        getScream={hdlGetScream} />
+        getScream={hdlGetScream}
+        submitComment={hdlSubmitComment}
+        errors={ui.errors}
+        loading={ui.loading} />
   }
 
   return (
