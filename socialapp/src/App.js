@@ -12,6 +12,7 @@ import Navbar from './components/Navbar'
 import LoginPage from './features/user/login/LoginPage'
 import ScreamsPage from './features/scream/ScreamsPage'
 import SignupPage from './features/user/signup/SignupPage'
+import UserPage from './features/user/user/UserPage'
 
 function App () {
   const dispatch = useDispatch()
@@ -59,6 +60,7 @@ function App () {
           component={SignupPage}
           isAuthenticated={isAuthenticated}
           redirectPath={"/"} />
+          <Route exact path="/user/:handle" component={UserPage} />
       </Switch>
     </div>
   );

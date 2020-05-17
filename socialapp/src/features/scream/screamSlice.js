@@ -120,12 +120,12 @@ export const thunkSubmitComment = (screamId, commentData) => dispatch => {
     })
 }
 
-// userが投稿したscreamsを取得する
+// userの情報とscreamを取得する
 export const getUserData = (userHandle) => dispatch => {
   dispatch(loadingUi())
   axios.get(`/user/${userHandle}`)
   .then(res => {
-    setScreams(res.data.screams)
+    dispatch(setScreams(res.data.screams))
     dispatch(stopLoadingUi())
   })
   .catch(err => {
