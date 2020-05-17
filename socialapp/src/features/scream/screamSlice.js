@@ -27,7 +27,7 @@ const screamSlice = createSlice({
     postScream (state, action) {
       state.screams.unshift(action.payload)
     },
-    submitComment(state, action) {
+    submitComment (state, action) {
       state.scream.comments.push(action.payload)
     }
   }
@@ -50,14 +50,14 @@ export const getScreams = () => dispatch => {
 export const getScream = (screamId) => dispatch => {
   dispatch(loadingUi())
   axios.get(`/scream/${screamId}`)
-  .then(res => {
-    dispatch(setScream(res.data))
-    dispatch(stopLoadingUi())
-  })
-  .catch(err => {
-    console.log(err)
-    dispatch(stopLoadingUi())
-  })
+    .then(res => {
+      dispatch(setScream(res.data))
+      dispatch(stopLoadingUi())
+    })
+    .catch(err => {
+      console.log(err)
+      dispatch(stopLoadingUi())
+    })
 }
 
 export const asyncPostScream = (newScream) => dispatch => {
@@ -110,14 +110,14 @@ export const deleteScream = screamId => dispatch => {
 // screamにコメントを追加する
 export const thunkSubmitComment = (screamId, commentData) => dispatch => {
   axios.post(`/scream/${screamId}/comments`, commentData)
-  .then(res => {
-    dispatch(submitComment(res.data))
-    dispatch(clearErrors())
-  })
-  .catch(err => {
-    console.log(err)
-    dispatch(setErrors(err.response.data))
-  })
+    .then(res => {
+      dispatch(submitComment(res.data))
+      dispatch(clearErrors())
+    })
+    .catch(err => {
+      console.log(err)
+      dispatch(setErrors(err.response.data))
+    })
 }
 
 export const {

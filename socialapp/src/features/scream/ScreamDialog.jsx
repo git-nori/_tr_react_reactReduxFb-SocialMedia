@@ -9,7 +9,7 @@ import CommentForm from './CommentForm'
 import { Dialog, DialogContent, CircularProgress, makeStyles, Grid, Typography, Box } from '@material-ui/core'
 import { Close, Chat, UnfoldMore } from '@material-ui/icons'
 
-const ScreamDialog = ({ 
+const ScreamDialog = ({
   scream,
   comments,
   screamId,
@@ -20,6 +20,7 @@ const ScreamDialog = ({
   getScream,
   likeScream,
   unlikeScream,
+  clearErrors,
   submitComment }) => {
   const classes = usestyles()
   const [open, setOpen] = useState(false)
@@ -33,6 +34,7 @@ const ScreamDialog = ({
 
   const hdlClose = () => {
     setOpen(false)
+    clearErrors()
   }
 
   const renderDlgMarkup = () => {
@@ -70,6 +72,7 @@ const ScreamDialog = ({
           </Grid>
           <hr className={classes.visibleSeparator} />
 
+          <CommentForm errors={errors} authenticated={authenticated} screamId={screamId} submitComment={submitComment} />
           <Comments comments={comments} />
         </Grid>
       )

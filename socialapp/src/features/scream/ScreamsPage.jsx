@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { uploadImage, logoutUser, editUserDetails, likeScream as setLikesByLike, unlikeScream as setLikesByUnlike } from '../user/userSlice'
 import { getScreams, getScream, likeScream, unlikeScream, deleteScream, thunkSubmitComment } from './screamSlice'
+import { clearErrors } from '../uiSlice'
 
 import ScreamCards from './ScreamCards'
 import Profile from '../profile/Profile'
@@ -40,6 +41,10 @@ const ScreamsPage = () => {
     dispatch(thunkSubmitComment(screamId, data))
   }
 
+  const hdlClearErrors = () => {
+    dispatch(clearErrors())
+  }
+
   const renderRecentScreamsMarkup = () => {
     // 初期表示時
     return (ui.loading && data.screams.length < 1)
@@ -53,6 +58,7 @@ const ScreamsPage = () => {
         deleteScream={hdlDelScream}
         getScream={hdlGetScream}
         submitComment={hdlSubmitComment}
+        clearErrors={hdlClearErrors}
         errors={ui.errors}
         loading={ui.loading} />
   }

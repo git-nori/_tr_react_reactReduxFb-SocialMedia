@@ -9,7 +9,7 @@ import TooltipIconbtn from '../../components/TooltipIconbtn'
 import { Card, CardContent, CardMedia, Typography, Box, makeStyles } from '@material-ui/core'
 import { Chat } from '@material-ui/icons'
 
-const ScreamCards = ({ screams, scream, user, errors, loading, getScream, likeScream, unlikeScream, deleteScream, submitComment }) => {
+const ScreamCards = ({ screams, scream, user, errors, loading, getScream, likeScream, unlikeScream, deleteScream, submitComment, clearErrors }) => {
   const classes = useStyles()
 
   const { authenticated, credentials, likes, notifications } = user
@@ -59,6 +59,7 @@ const ScreamCards = ({ screams, scream, user, errors, loading, getScream, likeSc
                 unlikeScream={unlikeScream}
                 getScream={getScream}
                 submitComment={submitComment}
+                clearErrors={clearErrors}
                 errors={errors}
                 loading={loading} />
             </Box>
