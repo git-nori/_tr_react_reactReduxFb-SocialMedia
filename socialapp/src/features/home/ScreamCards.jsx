@@ -2,45 +2,17 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 
+import LikeBtn from './LikeBtn'
 import DeleteScream from './DeleteScream'
+import ScreamDialog from './ScreamDialog'
 import TooltipIconbtn from '../../components/TooltipIconbtn'
 import { Card, CardContent, CardMedia, Typography, Box, makeStyles } from '@material-ui/core'
-import { Chat, Favorite, FavoriteBorder } from '@material-ui/icons'
+import { Chat } from '@material-ui/icons'
 
 const ScreamCards = ({ screams, user, likeScream, unlikeScream,deleteScream }) => {
   const classes = useStyles()
 
   const { authenticated, credentials, likes, notifications, loading } = user
-
-  // 既にLike済みか判定する
-  const islikedScream = screamId => {
-    if (likes && likes.find(like => like.screamId === screamId)) {
-      return true
-    }
-    return false
-  }
-
-  const renderLikedBtn = screamId => {
-    return !authenticated
-      ? (
-        <TooltipIconbtn tip="Like">
-          <Link to="/login">
-            <FavoriteBorder color="primary" />
-          </Link>
-        </TooltipIconbtn>
-      ) : (
-        islikedScream(screamId)
-          ? (
-            <TooltipIconbtn tip="Undo like" onClick={() => { unlikeScream(screamId) }}>
-              <Favorite color="primary" />
-            </TooltipIconbtn>
-          ) : (
-            <TooltipIconbtn tip="Do like" onClick={() => { likeScream(screamId) }}>
-              <FavoriteBorder color="primary" />
-            </TooltipIconbtn>
-          )
-      )
-  }
 
   const renderDelBtn = (screamId, userHandle) => {
     if (authenticated && credentials.handle === userHandle){
@@ -70,13 +42,14 @@ const ScreamCards = ({ screams, user, likeScream, unlikeScream,deleteScream }) =
             <Typography variant="body2" color="textSecondary">{moment(createdAt).fromNow()}</Typography>
             <Typography variant="body1">{body}</Typography>
             <Box ml={-2}>
-              {renderLikedBtn(screamId)}
+              <LikeBtn screamId={screamId} likes={likes} authenticated={authenticated} likeScream={likeScream} unlikeScream={unlikeScream}/>
               <span>{likeCount}</span>
               <TooltipIconbtn tip={"comments"}>
                 <Chat color="primary" />
               </TooltipIconbtn>
               <span>{commentCount}</span>
               {renderDelBtn(screamId, userHandle)}
+              <ScreamDialog scream={scream}/>
             </Box>
           </CardContent>
         </Card>
