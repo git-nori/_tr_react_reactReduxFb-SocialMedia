@@ -33,7 +33,8 @@ const ScreamsPage = () => {
   }
 
   const renderRecentScreamsMarkup = () => {
-    return loading
+    // 初期表示時
+    return (loading && screams.length < 1)
       ? <p>...loading</p>
       : <ScreamCards
         user={user}
