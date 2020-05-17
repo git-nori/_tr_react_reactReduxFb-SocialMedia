@@ -26,6 +26,9 @@ const screamSlice = createSlice({
     },
     postScream (state, action) {
       state.screams.unshift(action.payload)
+    },
+    submitComment(state, action) {
+      state.scream.comments.push(action.payload)
     }
   }
 })
@@ -104,12 +107,26 @@ export const deleteScream = screamId => dispatch => {
     })
 }
 
+// screamにコメントを追加する
+export const thunkSubmitComment = (screamId, commentData) => dispatch => {
+  axios.post(`/scream/${screamId}/comments`, commentData)
+  .then(res => {
+    dispatch(submitComment(res.data))
+    dispatch(clearErrors())
+  })
+  .catch(err => {
+    console.log(err)
+    dispatch(setErrors(err.response.data))
+  })
+}
+
 export const {
   setScreams,
   setLikeUnlikeScream,
   setScreamsByDelete,
   postScream,
-  setScream
+  setScream,
+  submitComment
 } = screamSlice.actions
 
 export default screamSlice.reducer
