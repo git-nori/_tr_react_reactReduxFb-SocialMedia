@@ -37,6 +37,16 @@ const ScreamDialog = ({
     clearErrors()
   }
 
+  const renderOpenDlgBtn = () => {
+    if (authenticated) {
+      return (
+        <TooltipIconbtn tip={"Expand scream"} onClick={hdlOpen}>
+          <UnfoldMore color="primary" />
+        </TooltipIconbtn>
+      )
+    }
+  }
+
   const renderDlgMarkup = () => {
     return loading
       ? (
@@ -80,9 +90,7 @@ const ScreamDialog = ({
 
   return (
     <>
-      <TooltipIconbtn tip={"Expand scream"} onClick={hdlOpen}>
-        <UnfoldMore color="primary" />
-      </TooltipIconbtn>
+      {renderOpenDlgBtn()}
 
       <Dialog open={open} onClose={hdlClose} fullWidth maxWidth="sm">
         <DialogContent>
