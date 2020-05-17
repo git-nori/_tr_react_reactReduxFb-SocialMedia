@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import PostScream from '../features/home/PostScream'
+import PostScream from '../features/scream/PostScream'
 import TooltipIconbtn from './TooltipIconbtn'
 import { AppBar, Toolbar, Box, makeStyles } from '@material-ui/core'
 import { Home, Notifications, ExitToApp, AccountBox } from '@material-ui/icons'

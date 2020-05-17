@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { uploadImage, logoutUser, editUserDetails, likeScream as setLikesByLike, unlikeScream as setLikesByUnlike } from '../auth/userSlice'
-import { getScreams, likeScream, unlikeScream, deleteScream } from '../dataSlice'
+import { uploadImage, logoutUser, editUserDetails, likeScream as setLikesByLike, unlikeScream as setLikesByUnlike } from '../user/userSlice'
+import { getScreams, likeScream, unlikeScream, deleteScream } from './screamSlice'
 
 import ScreamCards from './ScreamCards'
-import Profile from './Profile'
+import Profile from '../profile/Profile'
 
 import { Container, Grid } from '@material-ui/core'
 
-const HomePage = () => {
+const ScreamsPage = () => {
   const user = useSelector(state => state.user)
   const screams = useSelector(state => state.data.screams)
   const loading = useSelector(state => state.ui.loading)
@@ -59,4 +59,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default ScreamsPage

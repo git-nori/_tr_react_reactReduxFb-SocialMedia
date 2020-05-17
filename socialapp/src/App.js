@@ -4,14 +4,14 @@ import { Route, Switch, useHistory } from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 import axios from 'axios'
 
-import { setAuthenticated, logoutUser, getUserData } from './features/auth/userSlice'
-import { asyncPostScream } from './features/dataSlice'
+import { setAuthenticated, logoutUser, getUserData } from './features/user/userSlice'
+import { asyncPostScream } from './features/scream/screamSlice'
 
 import AuthRoute from './components/AuthRoute'
 import Navbar from './components/Navbar'
-import LoginPage from './features/auth/login/LoginPage'
-import HomePage from './features/home/HomePage'
-import SignupPage from './features/auth/signup/SignupPage'
+import LoginPage from './features/user/login/LoginPage'
+import ScreamsPage from './features/scream/ScreamsPage'
+import SignupPage from './features/user/signup/SignupPage'
 
 function App () {
   const dispatch = useDispatch()
@@ -46,7 +46,7 @@ function App () {
     <div className="App">
       <Navbar logout={hdlClkLogout} isAuthenticated={isAuthenticated} postScream={hdlClkPostScream} />
       <Switch>
-        <Route exact path="/" component={HomePage} />
+        <Route exact path="/" component={ScreamsPage} />
         <AuthRoute
           exact
           path="/login"

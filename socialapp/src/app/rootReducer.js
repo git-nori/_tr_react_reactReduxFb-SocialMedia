@@ -1,8 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit'
 
-import userReducer from '../features/auth/userSlice'
+import userReducer from '../features/user/userSlice'
 import uiReducer from '../features/uiSlice'
-import dataReducer from '../features/dataSlice'
+import dataReducer from '../features/scream/screamSlice'
 
 const rootReducer = combineReducers({
   user: userReducer,

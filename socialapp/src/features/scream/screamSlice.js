@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
-import { setErrors, clearErrors, loadingUi, stopLoadingUi } from './uiSlice'
+import { setErrors, clearErrors, loadingUi, stopLoadingUi } from '../uiSlice'
 
 const initialState = {
   screams: [],
   scream: {},
 }
 
-const dataSlice = createSlice({
+const screamSlice = createSlice({
   name: 'data',
   initialState,
   reducers: {
@@ -110,6 +110,6 @@ export const {
   setScreamsByDelete,
   postScream,
   setScream
-} = dataSlice.actions
+} = screamSlice.actions
 
-export default dataSlice.reducer
+export default screamSlice.reducer
