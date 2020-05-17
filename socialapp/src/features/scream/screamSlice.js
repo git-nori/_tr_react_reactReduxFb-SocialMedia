@@ -51,7 +51,7 @@ export const getScream = (screamId) => dispatch => {
     dispatch(setScream(res.data))
     dispatch(stopLoadingUi())
   })
-  .then(err => {
+  .catch(err => {
     console.log(err)
     dispatch(stopLoadingUi())
   })
