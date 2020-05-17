@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { uploadImage, logoutUser, editUserDetails, likeScream as setLikesByLike, unlikeScream as setLikesByUnlike } from '../user/userSlice'
-import { getScreams, likeScream, unlikeScream, deleteScream } from './screamSlice'
+import { getScreams, getScream, likeScream, unlikeScream, deleteScream } from './screamSlice'
 
 import ScreamCards from './ScreamCards'
 import Profile from '../profile/Profile'
@@ -32,6 +32,10 @@ const ScreamsPage = () => {
     dispatch(setLikesByUnlike(screamId))
   }
 
+  const hdlGetScream = (screamId) => {
+    dispatch(getScream(screamId))
+  }
+
   const renderRecentScreamsMarkup = () => {
     // 初期表示時
     return (loading && screams.length < 1)
@@ -41,7 +45,8 @@ const ScreamsPage = () => {
         screams={screams}
         likeScream={hdlLikeScream}
         unlikeScream={hdlUnlikeScream}
-        deleteScream={hdlDelScream} />
+        deleteScream={hdlDelScream}
+        getScream={hdlGetScream} />
   }
 
   return (

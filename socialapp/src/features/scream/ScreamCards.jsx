@@ -9,13 +9,13 @@ import TooltipIconbtn from '../../components/TooltipIconbtn'
 import { Card, CardContent, CardMedia, Typography, Box, makeStyles } from '@material-ui/core'
 import { Chat } from '@material-ui/icons'
 
-const ScreamCards = ({ screams, user, likeScream, unlikeScream,deleteScream }) => {
+const ScreamCards = ({ screams, user, getScream, likeScream, unlikeScream, deleteScream }) => {
   const classes = useStyles()
 
   const { authenticated, credentials, likes, notifications, loading } = user
 
   const renderDelBtn = (screamId, userHandle) => {
-    if (authenticated && credentials.handle === userHandle){
+    if (authenticated && credentials.handle === userHandle) {
       return (
         <DeleteScream screamId={screamId} deleteScream={deleteScream} />
       )
@@ -42,14 +42,20 @@ const ScreamCards = ({ screams, user, likeScream, unlikeScream,deleteScream }) =
             <Typography variant="body2" color="textSecondary">{moment(createdAt).fromNow()}</Typography>
             <Typography variant="body1">{body}</Typography>
             <Box ml={-2}>
-              <LikeBtn screamId={screamId} likes={likes} authenticated={authenticated} likeScream={likeScream} unlikeScream={unlikeScream}/>
+              <LikeBtn screamId={screamId} likes={likes} authenticated={authenticated} likeScream={likeScream} unlikeScream={unlikeScream} />
               <span>{likeCount}</span>
               <TooltipIconbtn tip={"comments"}>
                 <Chat color="primary" />
               </TooltipIconbtn>
               <span>{commentCount}</span>
               {renderDelBtn(screamId, userHandle)}
-              <ScreamDialog scream={scream} likes={likes} authenticated={authenticated} likeScream={likeScream} unlikeScream={unlikeScream}/>
+              <ScreamDialog 
+              screamId={screamId} 
+              likes={likes} 
+              authenticated={authenticated} 
+              likeScream={likeScream} 
+              unlikeScream={unlikeScream} 
+              getScream={getScream}/>
             </Box>
           </CardContent>
         </Card>
