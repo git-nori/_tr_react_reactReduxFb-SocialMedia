@@ -2,11 +2,12 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import PostScream from '../features/scream/PostScream'
+import Notifications from './Notifications'
 import TooltipIconbtn from './TooltipIconbtn'
 import { AppBar, Toolbar, Box, makeStyles } from '@material-ui/core'
-import { Home, Notifications, ExitToApp, AccountBox } from '@material-ui/icons'
+import { Home, ExitToApp, AccountBox } from '@material-ui/icons'
 
-const Navbar = ({ logout, isAuthenticated, postScream }) => {
+const Navbar = ({ logout, isAuthenticated, postScream, notifications, markNotifications }) => {
   const classes = useStyles()
 
   const renderBtn = () => {
@@ -17,7 +18,7 @@ const Navbar = ({ logout, isAuthenticated, postScream }) => {
           <Link to="/">
             <TooltipIconbtn tip={"Home"}><Home /></TooltipIconbtn>
           </Link>
-          <TooltipIconbtn tip={"Notifications"}><Notifications /></TooltipIconbtn>
+          <Notifications notifications={notifications} markNotifications={markNotifications}/>
           <TooltipIconbtn tip={"Logout"} onClick={logout}><ExitToApp /></TooltipIconbtn>
         </Box>
       ) : (
