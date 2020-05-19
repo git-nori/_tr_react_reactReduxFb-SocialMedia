@@ -38,13 +38,15 @@ const ScreamDialog = ({
   }
 
   const renderOpenDlgBtn = () => {
-    if (authenticated) {
-      return (
-        <TooltipIconbtn tip={"Expand scream"} onClick={hdlOpen}>
-          <UnfoldMore color="primary" />
-        </TooltipIconbtn>
-      )
-    }
+    return (
+      <TooltipIconbtn tip={"Expand scream"} onClick={hdlOpen}>
+        <UnfoldMore color="primary" />
+      </TooltipIconbtn>
+    )
+  }
+
+  const renderCommentForm = () => {
+    return authenticated && <CommentForm errors={errors} authenticated={authenticated} screamId={screamId} submitComment={submitComment} />
   }
 
   const renderDlgMarkup = () => {
@@ -82,7 +84,7 @@ const ScreamDialog = ({
           </Grid>
           <hr className={classes.visibleSeparator} />
 
-          <CommentForm errors={errors} authenticated={authenticated} screamId={screamId} submitComment={submitComment} />
+          {renderCommentForm()}
           <Comments comments={comments} />
         </Grid>
       )
