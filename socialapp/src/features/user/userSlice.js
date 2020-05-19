@@ -44,6 +44,9 @@ const userSlice = createSlice({
     unlikeScream (state, action) {
       state.likes = state.likes.filter(like => like.screamId !== action.payload)
     },
+    setNotificationsReaded (state, action) {
+      state.notifications.forEach(not => not.read = true)
+    }
   },
 })
 
@@ -53,7 +56,8 @@ export const {
   setUnAuthenticated,
   setAuthenticated,
   likeScream,
-  unlikeScream
+  unlikeScream,
+  setNotificationsReaded
 } = userSlice.actions
 
 export default userSlice.reducer
@@ -129,6 +133,14 @@ export const editUserDetails = userDetails => dispatch => {
   axios.post('/user', userDetails)
     .then(res => {
       dispatch(getUserData())
+    })
+    .catch(err => console.log(err))
+}
+
+export const markNotificationsRead = (notifications) => dispatch => {
+  axios.post('/notifications', notifications)
+    .then(res => {
+      dispatch(setNotificationsReaded())
     })
     .catch(err => console.log(err))
 }
